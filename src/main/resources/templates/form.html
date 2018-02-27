@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
+      rel="stylesheet" media="screen" />
+      
+<script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+ 
+<link href="../static/css/style.css" th:href="@{css/style.css}" rel="stylesheet" media="screen"/>
+<html xmlns:th="http://www.thymeleaf.org">
+    <body>
+             <nav class="navbar navbar-inverse">
+    	 	<div class="container-fluid">
+    	 	<ul class="nav navbar-nav">
+    	 	<li><a href="http://localhost:8080/login">Sign In</a></li>
+    	 	<li><a href="http://localhost:8080/register">Register</a></li>
+    	 	<li><a href="http://localhost:8080">Home</a></li>
+		    <li><a href="http://localhost:8080/search">Search</a></li>
+		    <li><a href="http://localhost:8080/record">Record an Item</a></li>
+		    <li><a href="http://localhost:8080/myItems">My Items</a></li>
+		    </ul>
+    	 	</div>
+    	 	</nav>
+    <div class="container">
+    <div class="jumbotron">
+
+	<center><h2>Registration Form</h2></center>
+ 
+		<form action="#" th:action="@{/registerProcess}" th:object="${user}" method="post">
+		<table class="table">
+			<tr>
+            	<td><input type="text" class="form-control" th:field="*{username}" placeholder="Username"/></td>
+                <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</td></tr>
+	    
+			<tr>
+                <td><input type="text" class="form-control" th:field="*{password}" placeholder="Password" /></td>
+                <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Age Error</td></tr>
+
+			<tr><td colspan="3">
+				<center><button type="submit" class="btn btn-default">Register</button></center></td>
+			</tr>
+		</table>
+	</form>
+	
+	<br/>
+	<br/>
+        </div>
+        </div>
+    </body>
+</html>

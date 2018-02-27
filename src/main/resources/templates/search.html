@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
+      rel="stylesheet" media="screen" />
+      
+<script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+ 
+<link href="../static/css/style.css" th:href="@{css/style.css}" rel="stylesheet" media="screen"/>
+<html xmlns:th="http://www.thymeleaf.org">
+    <body>
+             <nav class="navbar navbar-inverse">
+    	 	<div class="container-fluid">
+    	 	<ul class="nav navbar-nav">
+    	 	<li><a href="http://localhost:8080/logout">Sign Out</a></li>
+    	 	<li><a href="http://localhost:8080">Home</a></li>
+		    <li><a href="http://localhost:8080/search">Search</a></li>
+		    <li><a href="http://localhost:8080/record">Record an Item</a></li>
+		    <li><a href="http://localhost:8080/myItems">My Items</a></li>
+
+		    </ul>
+    	 	</div>
+    	 	</nav>
+    <div class="container">
+    <div class="jumbotron">
+
+	<center><h2>Search eBay completed listings</h2></center>
+ 
+		<form action="#" th:action="@{/searchResults}" th:object="${search}" method="post">
+		<table class="table">
+			<tr>
+            	<td><input type="text" class="form-control" th:field="*{keyword}" placeholder="Enter keywords"/></td></tr>
+            <tr>
+            	<td><div class="form-group"><select class="form-control" id="sel1" th:field="*{category}">
+    <option value = " ">Search by Category</option>        	
+    <option value = "Antiques">Antiques</option>
+    <option value = "Art">Art</option>
+    <option value = "Baby">Baby</option>
+    <option value = "Books">Books</option>
+    <option value = "Business &amp; Industrial">Business &amp; Industrial</option>
+    <option value = "Cameras &amp; Photo">Cameras &amp; Photo</option>
+    <option value = "Cell Phones &amp; Accessories">Cell Phones &amp; Accessories</option>
+    <option value = "Clothing, Shoes &amp; Accessories">Clothing, Shoes &amp; Accessories</option>
+    <option value = "Coins &amp; Paper Money">Coins &amp; Paper Money</option>
+    <option value = "Collectibles">Collectibles</option>
+    <option value = "Computers/Tablets &amp; Networking">Computers/Tablets &amp; Networking</option>
+    <option value = "Consumer Electronics">Consumer Electronics</option>
+    <option value = "Crafts">Crafts</option>
+    <option value = "Dolls &amp; Bears">Dolls &amp; Bears</option>
+    <option value = "DVDs &amp; Movies">DVDs &amp; Movies</option>
+    <option value = "Entertainment Memorabilia">Entertainment Memorabilia</option>
+    <option value = "Everything Else">Everything Else</option>
+    <option value = "Gift Cards &amp; Coupons">Gift Cards &amp; Coupons</option>
+    <option value = "Health &amp; Beauty">Health &amp; Beauty</option>
+    <option value = "Home &amp; Garden">Home &amp; Garden</option>
+    <option value = "Jewelry &amp; Watches">Jewelry &amp; Watches</option>
+    <option value = "Music">Music</option>
+    <option value = "Musical Instruments &amp; Gear">Musical Instruments &amp; Gear</option>
+    <option value = "Pet Supplies">Pet Supplies</option>
+    <option value = "Pottery &amp; Glass">Pottery &amp; Glass</option>
+    <option value = "Real Estate">Real Estate</option>
+    <option value = "Specialty Services">Specialty Services</option>
+    <option value = "Sporting Goods">Sporting Goods</option>
+    <option value = "Sports Mem, Cards &amp; Fan Shop">Sports Mem, Cards &amp; Fan Shop</option>
+    <option value = "Stamps">Stamps</option>
+    <option value = "Tickets &amp; Experiences">Tickets &amp; Experiences</option>
+    <option value = "Toys &amp; Hobbies">Toys &amp; Hobbies</option>
+    <option value = "Travel">Travel</option>
+   <option value = "Video Games &amp; Consoles">Video Games &amp; Consoles</option>
+    
+  </select>
+</div>
+</td>
+</tr>
+<tr>
+            	<td><div class="form-group"><select class="form-control" th:field="*{website}">
+    <option value = "eBay.ie">eBay.ie (Ireland)</option>        	
+    <option value = "eBay.co.uk">eBay.co.uk (United Kingdom)</option>
+    <option value = "eBay.com">eBay.com (United States)</option>
+    <option value = "eBay.ca">eBay.ca (Canada)</option>
+    <option value = "eBay.com.au">eBay.com.au (Australia)</option>
+    <option value = "eBay.es">eBay.es (Spain)</option>
+    <option value = "eBay.fr">eBay.fr (France)</option>
+    <option value = "eBay.it">eBay.it (Italy)</option>
+    <option value = "eBay.de">eBay.de (Germany)</option>
+    <option value = "eBay.ch">eBay.ch (Switzerland)</option>
+    <option value = "eBay.at">eBay.at (Austria)</option>
+    <option value = "eBay.nl">eBay.nl (Netherlands)</option>
+    <option value = "eBay.in">eBay.in (India)</option>
+    
+  </select>
+</div>
+</td>
+</tr>
+
+<tr>
+            	<td><div class="form-group"><select class="form-control" th:field="*{listingType}">
+    <option value = " ">Select a listing type</option>        	
+    <option value = "Buy it Now">Buy it Now</option>
+    <option value = "Auction">Auction</option>
+  </select>
+</div>
+</td>
+</tr>
+
+<tr>
+            	<td><div class="form-group"><select class="form-control" th:field="*{numberOfListings}">
+    <option value = " ">Number of Items</option>        	
+    <option value = "50">50</option>
+    <option value = "100">100</option>
+    <option value = "200">200</option>
+  </select>
+</div>
+</td>
+</tr>
+
+<tr><td>
+<center><div class="checkbox">
+<input type="checkbox" th:field="*{freePostage}" value=""> Free Postage</input>
+</div></center>
+</td></tr>
+
+<tr><td>
+<center><div class="checkbox">
+<input type="checkbox" th:field="*{sold}" value="">Sold Listings Only</input>
+</div></center>
+</td></tr>
+
+
+			<tr><td colspan="3">
+				<center><button type="submit" class="btn btn-default">Search</button><button type="submit" class="btn btn-default" formaction="/saveSearch">Save Search</button></center></td>
+			</tr>
+		</table>
+	</form>
+	
+	<br/>
+	<br/>
+        </div>
+        </div>
+    </body>
+</html>
