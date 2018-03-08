@@ -24,7 +24,7 @@ public class Sale extends Item{
 	
 	public Sale(String title, String price, String image, String itemCondition, String postage, String location, String link, String fee, String date)
 	{
-		super(title, price, postage, location, image);
+		super(title, itemCondition, price, postage, location, image);
 		this.itemCondition = itemCondition;
 		this.link = link;
 		this.fee = fee;

@@ -2,6 +2,7 @@ package com.DH.Scraper;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +32,10 @@ public class eBayScraper {
 			{
 				p = d.getElementById("prcIsum").text();
 			}
+			else if (d.getElementById("prcIsum_bidPrice") != null)
+			{
+				p = d.getElementById("prcIsum_bidPrice").text();
+			}
 			else
 			{
 				p = d.getElementsByClass("notranslate vi-VR-cvipPrice").first().text();
@@ -57,6 +62,7 @@ public class eBayScraper {
 			
 			Purchase purch = new Purchase(title, price, img, condition, postage, location, sellerName, link, date);
 			return purch;
+			
 		}
 			catch(Exception e)
 			{
@@ -74,6 +80,10 @@ public class eBayScraper {
 		if (d.getElementById("prcIsum") != null)
 		{
 			p = d.getElementById("prcIsum").text();
+		}
+		else if (d.getElementById("prcIsum_bidPrice") != null)
+		{
+			p = d.getElementById("prcIsum_bidPrice").text();
 		}
 		else
 		{
@@ -112,10 +122,19 @@ public class eBayScraper {
 		System.out.println(ebayUrl);
 		Document d = Jsoup.connect(ebayUrl).timeout(40000).get();
 		Elements el = d.getElementsByAttribute("listingId");
+		String itemCondition;
 		//System.out.println(el.size());
 		for (Element a : el) {
 			String title = a.getElementsByClass("lvtitle").first().getElementsByTag("a").first().text();//.first().getElementsByTag("img").first().attr("alt").toString();
 			String price = a.getElementsByClass("lvprice prc").first().text();
+			if (a.getElementsByClass("lvsubtitle").first() != null)
+			{
+				itemCondition = a.getElementsByClass("lvsubtitle").first().text();
+			}
+			else 
+			{
+				itemCondition = "None";
+			}
 			//String price = getPrice(p);
 			//String price = p;
 			String post = a.getElementsByClass("lvshipping").first().getElementsByClass("ship").first().text();
@@ -157,7 +176,7 @@ public class eBayScraper {
 			{
 				sold = true;
 			}
-			Item newItem = new Item(title, price, post, location, img, sold);
+			Item newItem = new Item(title, itemCondition, price, post, location, img, sold);
 			items.add(newItem);
 		}
 		return items;
@@ -165,8 +184,10 @@ public class eBayScraper {
 	
 	public Statistics getStatistics(Search search) throws IOException {
 		Statistics stats = new Statistics();
+		ArrayList<String> conditions = new ArrayList<String>();
+		ArrayList<Double> prices = new ArrayList<Double>();
 		String searchableKeywords = formatSearch(search.getKeyword());
-		String ebayUrl = "https://" + search.getWebsite() + "/sch/" + selectCategory(search.getCategory()) + "i.html?LH_Complete=1" + searchSold(search) + freePostage(search) + listingType(search) + numberOfListings(search) + "&_nkw=\"" + searchableKeywords + "\"";
+		String ebayUrl = "https://" + search.getWebsite() + "/sch/" + selectCategory(search.getCategory()) + "i.html?LH_Complete=1" + searchSold(search) + freePostage(search) + listingType(search) + numberOfListings(search) + "&_nkw=" + searchableKeywords + "";
 		System.out.println(ebayUrl);
 		Document d = Jsoup.connect(ebayUrl).timeout(20000).get();
 		Elements el = d.getElementsByAttribute("listingId");
@@ -185,6 +206,9 @@ public class eBayScraper {
 		
 		String auc = "";
 		for (Element a : el) {
+			
+			String price = a.getElementsByClass("lvprice prc").first().text();
+			prices.add(getPriceAsDouble(price));
 			
 			auc = a.getElementsByClass("lvformat").first().getElementsByTag("span").first().text();
 			if (auc.isEmpty())
@@ -241,7 +265,11 @@ public class eBayScraper {
 			{
 				sold = true;
 			}
+			
+			String itemCondition = a.getElementsByClass("lvsubtitle").first().text();
+			conditions.add(itemCondition);
 		}
+		Collections.sort(prices);
 		stats.setNumberListings(el.size());
 		stats.setNumberSold(numberSold);
 		stats.setAveragePrice(priceTotal/el.size());
@@ -251,6 +279,8 @@ public class eBayScraper {
 		stats.setHighestPrice(highestPrice);
 		stats.setLowestPrice(lowestPrice);
 		stats.setRange(String.valueOf(lowestPrice) + " to " + String.valueOf(highestPrice));
+		stats.setConditions(conditions);
+		stats.setPrices(prices);
 		return stats;
 	}
 	
@@ -545,4 +575,5 @@ public class eBayScraper {
 		}
 		return resultString;
 	}
+
 }

@@ -23,7 +23,7 @@ public class Purchase extends Item {
 	
 	public Purchase(String title, String price, String image, String itemCondition, String postage, String location, String sellerName, String link, String date)
 	{
-		super(title, price, postage, location, image);
+		super(title, itemCondition, price, postage, location, image);
 		this.itemCondition = itemCondition;
 		this.sellerName = sellerName;
 		this.link = link;

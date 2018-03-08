@@ -1,5 +1,7 @@
 package com.DH.Entity;
 
+import java.util.ArrayList;
+
 public class Statistics {
 	private int numberListings;
 	private int numberSold;
@@ -10,12 +12,14 @@ public class Statistics {
 	private double highestPrice;
 	private double lowestPrice;
 	private String range;
+	private ArrayList<String> conditions;
+	private ArrayList<Double> prices;
 
 	public Statistics(){
 		
 	}
 	
-	public Statistics(int numberListings, int numberSold, double averagePrice, double averagePostage, int numberAuctions, int numberPictures, double highestPrice, double lowestPrice, String range) {
+	public Statistics(int numberListings, int numberSold, double averagePrice, double averagePostage, int numberAuctions, int numberPictures, double highestPrice, double lowestPrice, String range, ArrayList<String> conditions,  ArrayList<Double> prices) {
 		this.numberListings = numberListings;
 		this.numberSold = numberSold;
 		this.averagePrice = averagePrice;
@@ -25,6 +29,8 @@ public class Statistics {
 		this.highestPrice = highestPrice;
 		this.lowestPrice = lowestPrice;
 		this.range = range;
+		this.conditions = conditions;
+		this.prices = prices;
 	}
 	
 	
@@ -99,6 +105,26 @@ public class Statistics {
 
 	public void setRange(String range) {
 		this.range = range;
+	}
+	
+	public ArrayList<String> getConditions()
+	{
+		return conditions;
+	}
+	
+	public void setConditions(ArrayList<String> conditions)
+	{
+		this.conditions = conditions;
+	}
+	
+	public ArrayList<Double> getPrices()
+	{
+		return prices;
+	}
+	
+	public void setPrices(ArrayList<Double> prices)
+	{
+		this.prices = prices;
 	}
 
 }

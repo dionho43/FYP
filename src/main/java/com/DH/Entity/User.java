@@ -34,6 +34,9 @@ public class User implements Serializable{
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Search> searches = new ArrayList<Search>();
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	private List<Report> reports = new ArrayList<Report>();
 	
 	public User(){
 		
@@ -109,6 +112,15 @@ public class User implements Serializable{
 	
 	public List<Search> getSearches(){
 		return this.searches;
+	}
+	
+	public List<Report> getReports(){
+		return this.reports;
+	}
+	
+	public void addReport(Report r)
+	{
+		this.reports.add(r);
 	}
 	
 

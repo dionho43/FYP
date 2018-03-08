@@ -11,6 +11,7 @@ public class Item {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	private String title;
+	private String itemCondition;
 	private String price;
 	private String postage;
 	private String location;
@@ -21,18 +22,20 @@ public class Item {
 		
 	}
 	
-	public Item(String title, String price, String postage, String location, String image)
+	public Item(String title, String itemCondition, String price, String postage, String location, String image)
 	{
 		this.title = title;
+		this.itemCondition = itemCondition;
 		this.price = price;
 		this.image = image;
 		this.postage = postage;
 		this.location = location;
 	}
 	
-	public Item(String title, String price, String postage, String location, String image, boolean sold)
+	public Item(String title, String itemCondition, String price, String postage, String location, String image, boolean sold)
 	{
 		this.title = title;
+		this.itemCondition = itemCondition;
 		this.price = price;
 		this.image = image;
 		this.sold = sold;
@@ -46,6 +49,16 @@ public class Item {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	
+	public String getItemCondition()
+	{
+		return itemCondition;
+	}
+	
+	public void setItemCondition(String itemCondition)
+	{
+		this.itemCondition = itemCondition;
 	}
 
 	public String getPrice() {
