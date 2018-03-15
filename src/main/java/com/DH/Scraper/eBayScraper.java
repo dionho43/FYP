@@ -16,6 +16,7 @@ import com.DH.Entity.Purchase;
 import com.DH.Entity.Sale;
 import com.DH.Entity.Search;
 import com.DH.Entity.Statistics;
+import com.DH.Entity.User;
 
 public class eBayScraper {
 	
@@ -103,7 +104,7 @@ public class eBayScraper {
 		String img = d.getElementById("ebay-scShare-div").attr("data-imageUrl");
 		String loc = d.getElementsByClass("iti-eu-bld-gry vi-shp-pdg-rt").first().text();
 		String location = extractLocation(loc);
-		String fee = /*Double.valueOf(price)/10;*/ "10";
+		String fee = String.valueOf(Double.valueOf(getPriceAsDouble(price))/10);;
 		String date = d.getElementById("bb_tlft").text();
 		
 		Sale sale = new Sale(title, price, img, condition, postage, location, link, fee, date);
@@ -180,6 +181,53 @@ public class eBayScraper {
 			items.add(newItem);
 		}
 		return items;
+	}
+	
+	public List<Sale> getUserSales(User user) throws IOException {
+		
+		//String ebayUrl = "https://" + search.getWebsite() + "/sch/" + user.getEbayUsername() + "/i.html?"; luch6006
+		String ebayUrl = "https://ebay.ie" + "/sch/" + user.getEbayUsername() + "/m.html?LH_Complete=1";
+		System.out.println(ebayUrl);
+		
+		ArrayList<Sale> userSales = new ArrayList<Sale>();
+		String itemCondition;
+		
+		Document d = Jsoup.connect(ebayUrl).timeout(40000).get();
+		Elements el = d.getElementsByAttribute("listingId");
+		
+		for (Element a : el) {
+			String title = a.getElementsByClass("lvtitle").first().getElementsByTag("a").first().text();
+			String price = a.getElementsByClass("lvprice prc").first().text();
+			if (a.getElementsByClass("lvsubtitle").first() != null)
+			{
+				itemCondition = a.getElementsByClass("lvsubtitle").first().text();
+			}
+			else 
+			{
+				itemCondition = "None";
+			}
+			String post = a.getElementsByClass("lvshipping").first().getElementsByClass("ship").first().text();
+			
+		String link = d.getElementsByClass("lvpicinner full-width picW").first().getElementsByTag("a").attr("href");
+		String img = a.getElementsByClass("lvpicinner full-width picW").first().getElementsByTag("img").attr("src");
+		
+		if (img.equals("https://ir.ebaystatic.com/pictures/aw/pics/s_1x2.gif"))
+		{
+		 img = a.getElementsByClass("lvpicinner full-width picW").first().getElementsByTag("img").attr("imgurl");
+		}
+		String location = "";
+		if (a.getElementsByClass("lvdetails left space-zero full-width").first().getElementsByTag("li ").size()>1)
+		{
+			location = a.getElementsByClass("lvdetails left space-zero full-width").first().getElementsByTag("li ").get(1).text();
+			location = formatLocation(location);
+		}
+		String fee = String.valueOf(Double.valueOf(getPriceAsDouble(price))/10);;
+		String date = d.getElementsByClass("timeleft").first().getElementsByClass("tme").first().getElementsByTag("span").first().text();
+		
+		Sale sale = new Sale(title, price, img, itemCondition, post, location, link, fee, date);
+		userSales.add(sale);
+		}
+		return userSales;
 	}
 	
 	public Statistics getStatistics(Search search) throws IOException {
@@ -266,7 +314,16 @@ public class eBayScraper {
 				sold = true;
 			}
 			
-			String itemCondition = a.getElementsByClass("lvsubtitle").first().text();
+			String itemCondition;
+			//String itemCondition = a.getElementsByClass("lvsubtitle").first().text();
+			if (a.getElementsByClass("lvsubtitle").first() != null)
+			{
+				itemCondition = a.getElementsByClass("lvsubtitle").first().text();
+			}
+			else 
+			{
+				itemCondition = "None";
+			}
 			conditions.add(itemCondition);
 		}
 		Collections.sort(prices);

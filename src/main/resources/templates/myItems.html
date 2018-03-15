@@ -1,11 +1,7 @@
 <!DOCTYPE html>
-<link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
-      rel="stylesheet" media="screen" />
-      
-<script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
-            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
- 
-<link href="../static/css/style.css" th:href="@{css/style.css}" rel="stylesheet" media="screen"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
   <title>Bootstrap Example</title>
@@ -19,7 +15,15 @@
     	 	<li><a href="http://localhost:8080">Home</a></li>
 		    <li><a href="http://localhost:8080/search">Search</a></li>
 		    <li><a href="http://localhost:8080/record">Record an Item</a></li>
-		    <li><a href="http://localhost:8080/myItems">My Items</a></li>
+		    <li class="dropdown">
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Items <span class="caret"></span></a>
+			<ul class="dropdown-menu">
+			<li><a href="http://localhost:8080/myPurchases/">My Purchases</a></li>
+			<li><a href="http://localhost:8080/mySales/">My Sales</a></li>
+			<li><a href="http://localhost:8080/mySearches/">My Searches</a></li>
+			<li><a href="http://localhost:8080/myReports/">My Reports</a></li>
+			</ul>
+			</li>
 		    </ul>
     	 	</div>
     	 	</nav>
@@ -36,6 +40,9 @@
   
   <center><form action="/myReports">
   <input type="submit" class="btn btn-default" value=" My Reports " /></form></center>
+  
+
+
   </div>
   </div>
 

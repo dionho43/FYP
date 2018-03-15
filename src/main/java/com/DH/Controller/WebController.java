@@ -113,8 +113,7 @@ public class WebController extends WebMvcConfigurerAdapter {
 	    	htmlHeader( out);
  		    toolBarStart(out);
 		    toolBarEnd(out);
-		    out.println(" <div class=\"container\">");
-		    out.println("<div class=\"jumbotron\">");
+		    container(out);
 		    out.println("<p>You are logged in as :" + loggedInUser.getUsername() + "</p>");
 		    out.println("<form action=\"http://localhost:8080/logout\">");
 		    out.println("<input type=\"submit\" class=\"btn btn-default\" value=\"Logout\" /></form>");
@@ -123,8 +122,7 @@ public class WebController extends WebMvcConfigurerAdapter {
 	    	else
 	    	{
 	    		htmlHeader( out);
-			    out.println(" <div class=\"container\">");
-			    out.println("<div class=\"jumbotron\">");
+	    		container(out);
 			    out.println("<p>Incorrect username or password</p>");
 			    out.println("");
 			    out.println("<form action=\"http://localhost:8080/login\">");
@@ -167,8 +165,7 @@ public class WebController extends WebMvcConfigurerAdapter {
         if (registrationCheck(user)) {
         	userService.save(user);
         	htmlHeader( out);
-		    out.println(" <div class=\"container\">");
-		    out.println("<div class=\"jumbotron\">");
+        	container(out);
 		    out.println("<p>Successfully registered user:" + user.getUsername() + "</p>");
 		    out.println("<form action=\"http://localhost:8080/login\">");
 		    out.println("<input type=\"submit\" class=\"btn btn-default\" value=\"Login\" /></form>");
@@ -177,8 +174,7 @@ public class WebController extends WebMvcConfigurerAdapter {
         else
         {
         	htmlHeader( out);
-		    out.println(" <div class=\"container\">");
-		    out.println("<div class=\"jumbotron\">");
+        	container(out);
 		    out.println("<p>Invalid registration details</p>");
 		    out.println("");
 		    out.println("<form action=\"http://localhost:8080/register\">");
@@ -224,8 +220,7 @@ public class WebController extends WebMvcConfigurerAdapter {
          	htmlHeader( out);
          	toolBarStart(out);
          	toolBarEnd(out);
- 		    out.println(" <div class=\"container\">");
- 		    out.println("<div class=\"jumbotron\">");
+         	container(out);
  		   out.println("<p>Search : " + search.getKeyword() + " (" + items.size() +" Listings Found)</p>");
  		    out.println("");
  		    out.println("<form action=\"http://localhost:8080/searchStatistics\">");
@@ -236,7 +231,7 @@ public class WebController extends WebMvcConfigurerAdapter {
  		    out.println("<thead>");
  		    out.println("<tr>");
  		    out.println("<th>Title</th>");
- 		    out.println("<th>Condition</th>");
+ 		    //out.println("<th>Condition</th>");
  		    out.println("<th>Price</th>");
  		    out.println("<th>Postage</th>");
  		    out.println("<th>Location</th>");
@@ -249,7 +244,7 @@ public class WebController extends WebMvcConfigurerAdapter {
  		    {
  		    	out.println("<tr>");
  		    	out.println("<td>" + items.get(i).getTitle() + "</td>");
- 		    	out.println("<td>" + items.get(i).getItemCondition() + "</td>");
+ 		    	//out.println("<td>" + items.get(i).getItemCondition() + "</td>");
  		    	out.println("<td>"+ items.get(i).getPrice()+"</td>");
  		    	out.println("<td>"+ items.get(i).getPostage()+"</td>");
  		    	out.println("<td>"+ items.get(i).getLocation()+"</td>");
@@ -336,9 +331,10 @@ public class WebController extends WebMvcConfigurerAdapter {
     	PrintWriter out = response.getWriter();
     	eBayScraper eBay = new eBayScraper();
     	Statistics stats = eBay.getStatistics(lastSearch);
-    	int brandNew = 0;
+    	/*int brandNew = 0;
     	int newOther = 0;
     	int preOwned = 0;
+    	int noCondition = 0;
     	int popularConditionNumber = 0;
     	String popularCondition = "";
     	for (String a : stats.getConditions())
@@ -355,6 +351,10 @@ public class WebController extends WebMvcConfigurerAdapter {
     		{
     			preOwned++;
     		}
+    		else
+    		{
+    			noCondition++;
+    		}
     	}
     	
     	if (preOwned > 0)
@@ -369,14 +369,18 @@ public class WebController extends WebMvcConfigurerAdapter {
     			{
     				popularConditionNumber = brandNew;
     				popularCondition = "Brand New";
+    				if (noCondition > popularConditionNumber)
+        			{
+        				popularConditionNumber = noCondition;
+        				popularCondition = "None";
+        			}
     			}
     		}
-    	}
+    	}*/
     	htmlHeader( out);
      	toolBarStart(out);
      	toolBarEnd(out);
-		    out.println(" <div class=\"container\">");
-		    out.println("<div class=\"jumbotron\">");
+     	container(out);
 		    out.println("<p>Search : " + lastSearch.getKeyword() + "</p>");
 		    out.println("<table class=\"table\">");
  		    out.println("<thead>");
@@ -389,7 +393,7 @@ public class WebController extends WebMvcConfigurerAdapter {
  		    out.println("<th>BIN's</th>");
  		    out.println("<th>Auctions</th>");
  		    out.println("<th>With Pictures</th>");
- 		    out.println("<th>Most Common Condition</th>");
+ 		   // out.println("<th>Most Common Condition</th>");
  		    out.println("<th>Highest Price</th>");
  		    out.println("<th>Lowest Price</th>");
  		    out.println("<th>Range</th>");
@@ -405,7 +409,7 @@ public class WebController extends WebMvcConfigurerAdapter {
  		    	out.println("<td>"+ (stats.getNumberListings() - stats.getNumberAuctions())+"</td>");
  		    	out.println("<td>"+ stats.getNumberAuctions() +"</td>");
  		    	out.println("<td>"+ stats.getNumberPictures() +"</td>");
- 		    	out.println("<td>"+ popularCondition +"</td>");
+ 		    	//out.println("<td>"+ popularCondition +"</td>");
  		    	out.println("<td>"+ correctCurrency(lastSearch) + " " + stats.getHighestPrice() +"</td>");
  		    	out.println("<td>"+ correctCurrency(lastSearch) + " " + stats.getLowestPrice() +"</td>");
  		    	out.println("<td>"+ correctCurrency(lastSearch) + " " + stats.getRange() +"</td>");
@@ -413,16 +417,16 @@ public class WebController extends WebMvcConfigurerAdapter {
  		    	out.println("</tbody>");
  		    out.println("</table>");
  		    scriptStart(out);
- 		    pieChart(1, out,  stats.getNumberSold(), (stats.getNumberListings() - stats.getNumberSold()), "Sold", "Not Sold", "Number of Listings", "chart1");
+ 		    pieChart(1, out,  stats.getNumberSold(), (stats.getNumberListings() - stats.getNumberSold()), "Sold", "Not Sold", "Sold vs. Not Sold (" + stats.getNumberListings() + " Listings)", "chart1");
  		    pieChart(2, out, (stats.getNumberListings() - stats.getNumberAuctions()), stats.getNumberAuctions(), "Buy it Now", "Auction", "Listing Types", "chart2");
- 		    pieChart(3, out, brandNew, newOther, preOwned,  "Brand New", "Like New", "Pre-Owned", "Item Condition", "chart3");
+ 		    //pieChart(3, out, brandNew, newOther, preOwned,  "Brand New", "Like New", "Pre-Owned", "Item Condition", "chart3");
  		    areaChart(4, out, stats.getPrices(), "Prices", "chart4");
  		    scriptEnd(out);
  		   out.println(" <center><div id=\"chart1\" style=\"height: 450px; width: 75%;\"></div></center>");
  		   out.println("<br>");
  		  out.println(" <center><div id=\"chart2\" style=\"height: 450px; width: 75%;\"></div></center>");
- 		  out.println("<br>");
-		  out.println(" <center><div id=\"chart3\" style=\"height: 450px; width: 75%;\"></div></center>");
+ 		  //out.println("<br>");
+		  //out.println(" <center><div id=\"chart3\" style=\"height: 450px; width: 75%;\"></div></center>");
 		  out.println("<br>");
 		  out.println(" <center><div id=\"chart4\" style=\"height: 450px; width: 75%;\"></div></center>");
  		    htmlFooter(out);
@@ -430,6 +434,8 @@ public class WebController extends WebMvcConfigurerAdapter {
     
     @GetMapping("/mySearches")
     public void mySearches( HttpServletRequest request, HttpServletResponse response)throws IOException {
+    	if (loggedInUser != null)
+    	{
      	response.setContentType("text/html");
      	PrintWriter out = response.getWriter();
      	
@@ -437,8 +443,7 @@ public class WebController extends WebMvcConfigurerAdapter {
          	htmlHeader( out);
          	toolBarStart(out);
          	toolBarEnd(out);
- 		    out.println(" <div class=\"container\">");
- 		    out.println("<div class=\"jumbotron\">");
+         	container(out);
  		    out.println("");
  		    out.println("<table class=\"table\">");
  		    out.println("<thead>");
@@ -458,9 +463,6 @@ public class WebController extends WebMvcConfigurerAdapter {
  		    	out.println("<tr>");
  		    	//out.println("<td><form th:action=\"@{/search/}\" th:object=\"${search}\" method=\"post\"><input type=\"hidden\" th:field=\"${id}\" /><button type=\"submit\">" + searches.get(i).getKeyword() + "</button></form></td>");
  		    	out.println("<td> <a href=\"http://localhost:8080/search/" + searches.get(i).getId() + "\">" + searches.get(i).getKeyword() + "</a></td>");
- 		    	
- 		    	
- 		    	
  		    	out.println("<td>" + searches.get(i).getCategory() + "</td>");
  		    	out.println("<td>" + searches.get(i).getWebsite() + "</td>");
  		    	out.println("<td>" + searches.get(i).getListingType() + "</td>");
@@ -488,6 +490,11 @@ public class WebController extends WebMvcConfigurerAdapter {
  		    out.println("</tbody>");
  		    out.println("</table>");
  		    htmlFooter(out);
+    	}
+    	else
+    	{
+    		response.sendRedirect("http://localhost:8080/login");
+    	}
      }
 
     @GetMapping("/search/{id}")
@@ -505,8 +512,7 @@ public class WebController extends WebMvcConfigurerAdapter {
          	htmlHeader( out);
          	toolBarStart(out);
          	toolBarEnd(out);
- 		    out.println(" <div class=\"container\">");
- 		    out.println("<div class=\"jumbotron\">");
+         	container(out);
  		   out.println("<p>Search : " + current.getKeyword() + " (" + items.size() +" Listings Found)</p>");
  		    out.println("");
  		    out.println("<form action=\"http://localhost:8080/searchStatistics\">");
@@ -553,6 +559,8 @@ public class WebController extends WebMvcConfigurerAdapter {
     //Purchases
     @GetMapping("/myPurchases")
     public void myPurchases( HttpServletRequest request, HttpServletResponse response)throws IOException {
+    	if (loggedInUser != null)
+    	{
      	response.setContentType("text/html");
      	PrintWriter out = response.getWriter();
      	
@@ -560,8 +568,7 @@ public class WebController extends WebMvcConfigurerAdapter {
          	htmlHeader( out);
          	toolBarStart(out);
          	toolBarEnd(out);
- 		    out.println(" <div class=\"container\">");
- 		    out.println("<div class=\"jumbotron\">");
+         	container(out);
  		    out.println("");
  		    out.println("<table class=\"table\">");
  		    out.println("<thead>");
@@ -595,6 +602,11 @@ public class WebController extends WebMvcConfigurerAdapter {
  		    out.println("</tbody>");
  		    out.println("</table>");
  		    htmlFooter(out);
+    	}
+    	else
+    	{
+    		response.sendRedirect("http://localhost:8080/login");
+    	}
      }
     
     @PostMapping("/recordPurchase")
@@ -627,12 +639,13 @@ public class WebController extends WebMvcConfigurerAdapter {
 			    out.println("<center><input type=\"submit\" class=\"btn btn-default\" value=\"Back\" /></center></form>");
  	 		    htmlFooter(out);
  		    }
-
      }
 
     //Sales
     @GetMapping("/mySales")
     public void mySales( HttpServletRequest request, HttpServletResponse response)throws IOException {
+    	if (loggedInUser != null)
+    	{
      	response.setContentType("text/html");
      	PrintWriter out = response.getWriter();
      	
@@ -640,8 +653,7 @@ public class WebController extends WebMvcConfigurerAdapter {
          	htmlHeader( out);
          	toolBarStart(out);
          	toolBarEnd(out);
- 		    out.println(" <div class=\"container\">");
- 		    out.println("<div class=\"jumbotron\">");
+         	container(out);
  		    out.println("");
  		    out.println("<table class=\"table\">");
  		    out.println("<thead>");
@@ -675,6 +687,11 @@ public class WebController extends WebMvcConfigurerAdapter {
  		    out.println("</tbody>");
  		    out.println("</table>");
  		    htmlFooter(out);
+    	}
+    	else
+    	{
+    		response.sendRedirect("http://localhost:8080/login");
+    	}
      }
     
     @PostMapping("/recordSale")
@@ -709,9 +726,109 @@ public class WebController extends WebMvcConfigurerAdapter {
  		    }
      }
     
+    public void updateSalesMethod() throws IOException
+    {
+    	//search ebay for user
+    	//parse items
+    	//for each item,
+    	//check item title, date
+    	//if doesnt exist,
+    	//add to user's list of items
+    	
+    	eBayScraper eBay = new eBayScraper();
+     	List<Sale> userSales = eBay.getUserSales(loggedInUser);
+     	List<Sale> prevSales = loggedInUser.getSales();
+     	System.out.println(userSales.toString());
+     	System.out.println(userSales.size());
+     	
+     	for (Sale s : userSales)
+     	{
+     		boolean exists = false;
+     		for (Sale c : prevSales)
+     		{
+     			System.out.println(s.getTitle());
+     			System.out.println(c.getTitle());
+     			System.out.println(s.getLink());
+     			System.out.println(c.getLink());
+     			if (s.getTitle().equals(c.getTitle()) /*s.getDate().equals(c.getDate()*/ && s.getLink().equals(c.getLink()))
+     			{
+     				exists = true;
+     			}
+     			else
+     			{
+     				exists = false;
+     			}
+     			
+     			if (exists ==false)
+     			{
+     				Sale newSale = s;
+     				User temp = userService.findByUsername(loggedInUser.getUsername()).get(0);
+     		    	temp.addSale(newSale);
+     		    	userService.save(temp);
+     		    	loginCheck(loggedInUser);
+     			}
+     		}
+     	}
+    }
+    
+    @GetMapping("/updateSales")
+    public void updateSales(HttpServletRequest request, HttpServletResponse response)throws IOException {
+     	response.setContentType("text/html");
+     	PrintWriter out = response.getWriter();
+     	if (loggedInUser != null)
+    	{
+     	updateSalesMethod();
+     	List<Sale> sales = loggedInUser.getSales();
+     	htmlHeader( out);
+     	toolBarStart(out);
+     	toolBarEnd(out);
+     	container(out);
+		    out.println("");
+		    out.println("<table class=\"table\">");
+		    out.println("<thead>");
+		    out.println("<tr>");
+		    out.println("<th>Title</th>");
+		    out.println("<th>Price</th>");
+		    out.println("<th>Postage</th>");
+		    out.println("<th>Location</th>");
+		    out.println("<th>Date</th>");
+		    out.println("<th>Fee</th>");
+		    out.println("<th>Condition</th>");
+		    out.println("<th>Link</th>");
+		    out.println("<th>Image</th>");
+		    out.println("</tr>");
+		    out.println("</thead>");
+		    out.println("<tbody>");
+		    for (int i=0; i<sales.size(); i++)
+		    {
+		    	out.println("<tr>");
+		    	out.println("<td>" + sales.get(i).getTitle() + "</td>");
+		    	out.println("<td>"+ sales.get(i).getPrice()+"</td>");
+		    	out.println("<td>"+ sales.get(i).getPostage()+"</td>");
+		    	out.println("<td>"+ sales.get(i).getLocation()+"</td>");
+		    	out.println("<td>"+ sales.get(i).getDate()+"</td>");
+		    	out.println("<td>"+ sales.get(i).getFee()+"</td>");
+		    	out.println("<td>"+ sales.get(i).getItemCondition()+"</td>");
+		    	out.println("<td> <a href=\"" + sales.get(i).getLink() + "\">Link to eBay</a></td>");
+		    	out.println("<td><img src=\"" + sales.get(i).getImage()+ "\"></td>");
+		    	out.println("</tr>");
+		    }
+		    out.println("</tbody>");
+		    out.println("</table>");
+		    htmlFooter(out);
+	}
+	else
+	{
+		response.sendRedirect("http://localhost:8080/login");
+	}
+     }
+    
     //Reports
     @GetMapping("/myReports")
     public void myReports( HttpServletRequest request, HttpServletResponse response)throws IOException {
+    	
+    	if (loggedInUser != null)
+    	{
     	createReports();
      	response.setContentType("text/html");
      	PrintWriter out = response.getWriter();
@@ -743,8 +860,7 @@ public class WebController extends WebMvcConfigurerAdapter {
          	htmlHeader( out);
          	toolBarStart(out);
          	toolBarEnd(out);
- 		    out.println(" <div class=\"container\">");
- 		    out.println("<div class=\"jumbotron\">");
+         	container(out);
  		   out.println("<center><h2>This month's Report : </h2></center>");
  		    out.println("");
 		    out.println("<table class=\"table\">");
@@ -808,11 +924,11 @@ public class WebController extends WebMvcConfigurerAdapter {
 		    out.println("<td>" + (totalPurchases + postageCosts) + "</td>");
 		    out.println("</tr>");
 		    out.println("<tr>");
-		    out.println("<td>Profit</td>");
+		    out.println("<td><b>Profit</b></td>");
 		    out.println("<td></td>");
 		    out.println("<td></td>");
 		    out.println("<td></td>");
-		    out.println("<td>" +((totalSales - fees) - (totalPurchases + postageCosts)) + "</td>");
+		    out.println("<td><b>" +((totalSales - fees) - (totalPurchases + postageCosts)) + "</b></td>");
 		    out.println("</tr>");
 		    out.println("</tbody>");
 		    out.println("</table>");
@@ -833,92 +949,15 @@ public class WebController extends WebMvcConfigurerAdapter {
  		    out.println("</tbody>");
  		    out.println("</table>");
  		    htmlFooter(out);
+    	}
+    	else
+    	{
+    		response.sendRedirect("http://localhost:8080/login");
+    	}
      }
     
     public void createReports()
     {
-    	/*String latestMonth;
-    	String[] monthName = {"January", "February",
-                "March", "April", "May", "June", "July",
-                "August", "September", "October", "November",
-                "December"};
-    	
-    	ArrayList<String> monthArray = new ArrayList<String>();
-    	for (String a : monthName)
-    	{
-    		monthArray.add(a);
-    	}
-    	
-    	Calendar cal = Calendar.getInstance();
-    	String currentMonth = monthName[cal.get(Calendar.MONTH)];
-    	
-    	ArrayList<String> m = new ArrayList<String>();
-    	
-    	if (!loggedInUser.getReports().isEmpty())
-    	{
-    		latestMonth = loggedInUser.getReports().get(loggedInUser.getReports().size()-1).getMonth();
-    	}
-    	
-    	for (Sale s : loggedInUser.getSales())
-    	{
-    		String a = extractMonth(s.getDate());
-    		if (!m.contains(a))
-    		{
-    			m.add(a);
-    		}
-    	}
-    	
-    	for (Purchase p : loggedInUser.getPurchases())
-    	{
-    		String b = extractMonth(p.getDate());
-    		if (!m.contains(b))
-    		{
-    			m.add(b);
-    		}
-    	}
-    	
-    	String reportName = "";
-    	int numberOfSales = 0;
-    	int numberOfPurchases = 0;
-    	double totalSales = 0;
-    	double fees = 0;
-    	double totalPurchases = 0;
-    	double totalPostage = 0;
-    	
-    	System.out.println(m.toString());
-    	
-    	
-    	for (String month : m)
-    	{
-    		if (month.equals(currentMonth))
-    		{
-    			break;
-    		}
-    			for (Sale s : loggedInUser.getSales())
-    	    	{
-    	    		if (month.contains(extractMonth(s.getDate())))
-    	    		{
-    	    			numberOfSales++;
-    	    			totalSales = totalSales + getPriceAsDouble(s.getPrice());
-    	    			reportName = month + extractYear(s.getDate());
-    	    		}
-    	    	}
-    	    	
-    	    	for (Purchase p : loggedInUser.getPurchases())
-    	    	{
-    	    		numberOfPurchases++;
-    	    		totalPurchases = totalPurchases + getPriceAsDouble(p.getPrice());
-    	    		totalPostage = totalPostage + getPriceAsDouble(p.getPostage());
-    	    		reportName = month + extractYear(p.getDate());
-    	    	}
-
-    	    	
-    	    	Report r = new Report (reportName, numberOfSales, totalSales, fees, numberOfPurchases, totalPurchases, totalPostage, month);
-    	    	loggedInUser.addReport(r);
-    	    	userService.save(loggedInUser);
-    	    	
-    	}*/
-    	
     	String[] monthName = {"January", "February",
                 "March", "April", "May", "June", "July",
                 "August", "September", "October", "November",
@@ -950,8 +989,6 @@ public class WebController extends WebMvcConfigurerAdapter {
     		}
     	}
     	
-    	
-    	
     	Calendar cal = Calendar.getInstance();
     	String currentMonth = monthName[cal.get(Calendar.MONTH)];
     	
@@ -971,6 +1008,7 @@ public class WebController extends WebMvcConfigurerAdapter {
     	    			numberOfSales++;
     	    			totalSales = totalSales + getPriceAsDouble(s.getPrice());
     	    			reportName =  loggedInUser.getUsername() + month + extractYear(s.getDate());
+    	    			fees = fees + Double.valueOf(s.getFee());
     	    		}
     	    	}
     	    	
@@ -999,7 +1037,6 @@ public class WebController extends WebMvcConfigurerAdapter {
      		    	userService.save(temp);
      		    	loginCheck(loggedInUser);
     	    	
-    	    	
     	    	}
     	    	else
     	    	{
@@ -1009,7 +1046,6 @@ public class WebController extends WebMvcConfigurerAdapter {
     	    		existingReport.get(0).setNumberOfPurchases(numberOfPurchases);
     	    		existingReport.get(0).setTotalPurchases(totalPurchases);
     	    		existingReport.get(0).setPostageCosts(totalPostage);
-    	    		
     	    		
     	    		reportService.save(existingReport.get(0));
     	    		loginCheck(loggedInUser);
@@ -1032,8 +1068,7 @@ public class WebController extends WebMvcConfigurerAdapter {
      	htmlHeader( out);
      	toolBarStart(out);
      	toolBarEnd(out);
-		    out.println(" <div class=\"container\">");
-		    out.println("<div class=\"jumbotron\">");
+     	container(out);
 		    out.println("");
 	    out.println("<table class=\"table\">");
 	    out.println("<thead>");
@@ -1142,8 +1177,7 @@ public class WebController extends WebMvcConfigurerAdapter {
          	htmlHeader( out);
          	toolBarStart(out);
          	toolBarEnd(out);
- 		    out.println(" <div class=\"container\">");
- 		    out.println("<div class=\"jumbotron\">");
+         	container(out);
  		    out.println("");
  		    out.println("<script>");
  		    out.println("window.onload = function () {");
@@ -1349,7 +1383,16 @@ public class WebController extends WebMvcConfigurerAdapter {
     	 out.println("<li><a href=\"/\">Home</a></li>");
     	 out.println("<li><a href=\"http://localhost:8080/search\">Search</a></li>");
     	 out.println("<li><a href=\"http://localhost:8080/record\">Record an Item</a></li>");
-    	 out.println("<li><a href=\"http://localhost:8080/myItems\">My Items</a></li>");
+    	 out.println("<li class=\"dropdown\">");
+    	 out.println("<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">My Items <span class=\"caret\"></span></a>");
+    	 out.println("<ul class=\"dropdown-menu\">");
+    	 out.println("<li><a href=\"http://localhost:8080/myPurchases/\">My Purchases</a></li>");
+    	 out.println("<li><a href=\"http://localhost:8080/mySales/\">My Sales</a></li>");
+    	 out.println("<li><a href=\"http://localhost:8080/mySearches/\">My Searches</a></li>");
+    	 out.println("<li><a href=\"http://localhost:8080/myReports/\">My Reports</a></li>");
+    	 out.println("</ul>");
+    	 out.println("</li>");
+    	 
      }
      
      public void toolBarEnd(PrintWriter out)
@@ -1359,14 +1402,18 @@ public class WebController extends WebMvcConfigurerAdapter {
     	 out.println("</nav>");
      }
      
+     public void container(PrintWriter out)
+     {
+    	 out.println(" <div class=\"container\">");
+		 out.println("<div class=\"jumbotron\">");
+     }
+     
      public void htmlHeader(PrintWriter out)
      {
 	    	out.println("<!DOCTYPE html>");
-		    out.println("<link href=\"http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css\" th:href=\"@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}\"\r\n" + 
-		    		"      rel=\"stylesheet\" media=\"screen\" />");
-		    out.println("<script src=\"http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js\"\r\n" + 
-		    		"            th:src=\"@{/webjars/jquery/2.1.4/jquery.min.js}\"></script>");
-		    out.println("<link href=\"../static/css/style.css\" th:href=\"@{css/style.css}\" rel=\"stylesheet\" media=\"screen\"/>");
+		    out.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\"/>");
+		    out.println("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js\"></script>");
+		    out.println("<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"></script>");
 		    out.println("<html xmlns:th=\"http://www.thymeleaf.org\">");
 		    out.println("<body>");
      }

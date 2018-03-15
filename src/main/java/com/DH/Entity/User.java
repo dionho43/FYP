@@ -25,6 +25,7 @@ public class User implements Serializable{
 	private int id;
 	private String username;
 	private String password;
+	private String ebayUsername;
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Purchase> purchases = new ArrayList<Purchase>();
@@ -42,9 +43,10 @@ public class User implements Serializable{
 		
 	}
 	
-	public User(String username, String password) {
+	public User(String username, String ebayUsername, String password) {
 		super();
 		this.username = username;
+		this.ebayUsername = ebayUsername;
 		this.password = password;
 	}
 	
@@ -64,6 +66,14 @@ public class User implements Serializable{
 		this.username = username;
 	}
 	
+	public String getEbayUsername() {
+		return ebayUsername;
+	}
+
+	public void setEbayUsername(String ebayUsername) {
+		this.ebayUsername = ebayUsername;
+	}
+
 	public String getPassword() {
 		return password;
 	}
