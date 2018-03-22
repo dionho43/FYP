@@ -740,6 +740,8 @@ public class WebController extends WebMvcConfigurerAdapter {
      	List<Sale> prevSales = loggedInUser.getSales();
      	System.out.println(userSales.toString());
      	System.out.println(userSales.size());
+     	System.out.println(prevSales.toString());
+     	System.out.println(prevSales.size());
      	
      	for (Sale s : userSales)
      	{
@@ -750,15 +752,12 @@ public class WebController extends WebMvcConfigurerAdapter {
      			System.out.println(c.getTitle());
      			System.out.println(s.getLink());
      			System.out.println(c.getLink());
-     			if (s.getTitle().equals(c.getTitle()) /*s.getDate().equals(c.getDate()*/ && s.getLink().equals(c.getLink()))
+     			if (s.getTitle().equals(c.getTitle()) && s.getLink().equals(c.getLink()))
      			{
+     				
      				exists = true;
      			}
-     			else
-     			{
-     				exists = false;
-     			}
-     			
+     		}
      			if (exists ==false)
      			{
      				Sale newSale = s;
@@ -767,7 +766,7 @@ public class WebController extends WebMvcConfigurerAdapter {
      		    	userService.save(temp);
      		    	loginCheck(loggedInUser);
      			}
-     		}
+     		
      	}
     }
     

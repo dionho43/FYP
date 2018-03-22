@@ -208,7 +208,7 @@ public class eBayScraper {
 			}
 			String post = a.getElementsByClass("lvshipping").first().getElementsByClass("ship").first().text();
 			
-		String link = d.getElementsByClass("lvpicinner full-width picW").first().getElementsByTag("a").attr("href");
+		String link = a.getElementsByClass("lvpicinner full-width picW").first().getElementsByTag("a").attr("href");
 		String img = a.getElementsByClass("lvpicinner full-width picW").first().getElementsByTag("img").attr("src");
 		
 		if (img.equals("https://ir.ebaystatic.com/pictures/aw/pics/s_1x2.gif"))
@@ -222,7 +222,7 @@ public class eBayScraper {
 			location = formatLocation(location);
 		}
 		String fee = String.valueOf(Double.valueOf(getPriceAsDouble(price))/10);;
-		String date = d.getElementsByClass("timeleft").first().getElementsByClass("tme").first().getElementsByTag("span").first().text();
+		String date = a.getElementsByClass("timeleft").first().getElementsByClass("tme").first().getElementsByTag("span").first().text();
 		
 		Sale sale = new Sale(title, price, img, itemCondition, post, location, link, fee, date);
 		userSales.add(sale);
@@ -341,7 +341,7 @@ public class eBayScraper {
 		return stats;
 	}
 	
-	public String salePurchaseTitle(String s)
+	public String salePurchaseTitle(String s) // This method is to remove 2 appended words returned from the scrape
 	{
 		String parts[] = s.split(" ");
 		String title = "";
@@ -350,7 +350,7 @@ public class eBayScraper {
 			title = title + parts[i] + " ";
 		}
 
-		return title;
+		return title.substring(0, title.length() - 1);
 	}
 	
 	public String freePostage(Search s)
@@ -505,7 +505,6 @@ public class eBayScraper {
 	
 	public double getPriceAsDouble(String p)
 	{
-		System.out.println(p);
 		if (!p.matches(".*\\d+.*"))
 		{
 			return 0;

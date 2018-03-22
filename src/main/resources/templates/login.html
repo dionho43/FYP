@@ -36,7 +36,7 @@
                 <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</td></tr>
 	    
 			<tr>
-                <td><input type="text" class="form-control" th:field="*{password}" placeholder="Password"/></td>
+                <td><input type="password" class="form-control" th:field="*{password}" placeholder="Password"/></td>
                 <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Age Error</td></tr>
 			<tr><td colspan="3">
 				<center><button type="submit" class="btn btn-default">Login</button></center></td>
